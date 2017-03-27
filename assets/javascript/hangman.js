@@ -1,29 +1,25 @@
 //declarations
 
-	var cities = ["houston", "chicago", "denver", "miami", "seattle", "newyork"]
-	
-	var cityIndex = [];
-	var city;
-	var cityLength;
-	var letterString;
+	var cities = ["houston", "chicago", "denver", "miami", "seattle", "newyork", "austin", "atlanta", "memphis", "lasvegas"];
+
+	var cityIndex = Math.floor(Math.random() * 10);
+	var city = cities[cityIndex];
+	var cityLength = city.length;
+	var letterString = city.split("");
 	var guessString =[];
 
 	var userKey = "";
 	var userPrevKey = "";
 	var result = [];
-	var letterIsRight;
-	var resultHitCounter = 0;
-
+	var letterIsRight = false;
+	//var resultHitCounter = 0;
+	var resultHitCounter = cityLength;
 
 	var wCount = 0;
-	var gCount;
-	var uGuessletter;
+	var gCount = 8;
+	var uGuessletter = "";
 
-function resetValues(){
-
-	letterIsRight = false;
-	gCount = 8;
-	uGuessletter = "";
+function initialValues(){
 
 	document.querySelector("#wins").innerHTML = "WINS";
 	document.querySelector("#winvalue").innerHTML ="0";
@@ -32,23 +28,37 @@ function resetValues(){
 	document.querySelector("#guessednum").innerHTML = "8";
 	document.querySelector("#letterguessed").innerHTML = "LETTERS ALREADY ENTERED";
 	document.querySelector("#lettersentered").innerHTML = "";
+	console.log(letterIsRight);
 
 	generateCity();
 
 }
 
-function resetValues2(){
-	
-	letterIsRight = false;
-	gCount = 8;
-	uGuessletter = "";
-	wCount++;
+function resetValues(){
 
+	cityIndex = Math.floor(Math.random() * 6);
+	city = cities[cityIndex];
+	cityLength = city.length;
+	letterString = city.split("");
+	guessString =[];
+
+	userKey = "";
+	userPrevKey = "";
+	result = [];
+	letterIsRight = false;
+	//var resultHitCounter = 0;
+	resultHitCounter = cityLength;
+	
+	gCount = 9;
+	uGuessletter = "";
+
+	//console.log(gcount);
+	
 	document.querySelector("#winvalue").innerHTML = wCount;
-	document.querySelector("#city").innerHTML = "CURRENT WORD";
-	document.querySelector("#guesses").innerHTML = "NUMBER OF GUESSES REMAINING";
+	//document.querySelector("#city").innerHTML = "CURRENT WORD";
+	//document.querySelector("#guesses").innerHTML = "NUMBER OF GUESSES REMAINING";
 	document.querySelector("#guessednum").innerHTML = "8";
-	document.querySelector("#letterguessed").innerHTML = "LETTERS ALREADY ENTERED";
+	//document.querySelector("#letterguessed").innerHTML = "LETTERS ALREADY ENTERED";
 	document.querySelector("#lettersentered").innerHTML = "";
 	
 	generateCity();
@@ -56,12 +66,6 @@ function resetValues2(){
 
 //generating the city & underscores
 function generateCity(){
-	cityIndex = Math.floor(Math.random() * 6);
-	city = cities[cityIndex];
-	cityLength = city.length;
-	letterString = city.split("");
-	resultHitCounter = cityLength;
-
 	for(var i=0; i<cityLength; i++){
 
 		guessString[i] = " _ ";
@@ -69,6 +73,7 @@ function generateCity(){
 
 	document.querySelector("#cityvalue").innerHTML = guessString;
 	console.log(guessString);
+	console.log(letterString);
 		
 }
 
@@ -76,23 +81,29 @@ function generateCity(){
 
 //Execute
 
-resetValues();
+initialValues();
 
 document.onkeyup = function(event){
 
-	if(gCount === 0 || resultHitCounter === 0){
-		resetValues2();
-	}
+		if(gCount === 0){
+
+			resetValues();
+
+		}
+
+		else if(resultHitCounter === 0){
+		wCount++;
+		resetValues();
+		}
+
+			
+		userKey = event.key;
+
+		console.log(userKey);	
 
 		
-	else{
 
-		userKey = event.key;	
-
-		var letterIsRight = false;
-		var wordIsRight = false;
-
-		console.log(letterString);
+		letterIsRight = false;
 
 		for(var c=0; c<cityLength; c++){
 
@@ -101,12 +112,13 @@ document.onkeyup = function(event){
 				letterIsRight = true;
 				resultHitCounter--;
 			}
-
-			
+						
 
 			result[c] = guessString[c];
 
 		}
+
+		console.log(letterIsRight);
 		
 		console.log(resultHitCounter);
 
@@ -115,7 +127,7 @@ document.onkeyup = function(event){
 
 		if(!letterIsRight && userKey === userPrevKey){
 			document.querySelector("#guessednum").innerHTML = gCount;
-			//document.querySelector("#lettersentered").innerHTML += userKey + ", ";
+			
 		}
 		else if(!letterIsRight){
 				
@@ -127,8 +139,13 @@ document.onkeyup = function(event){
 		userPrevKey = userKey;
 		userKey = "";
 
+		
+
+		
+		
+
 		}
 	
-}
+
 
 //winCounter();
