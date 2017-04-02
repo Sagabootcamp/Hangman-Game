@@ -1,4 +1,4 @@
-//declarations
+
 
 	var cities = ["houston", "chicago", "denver", "miami", "seattle", "newyork", "austin", "atlanta", "memphis", "lasvegas"];
 
@@ -9,15 +9,15 @@
 	var guessString =[];
 
 	var userKey = "";
-	var userPrevKey = "";
+	var i = 0;
+	var userPrevKey = [];
 	var result = [];
 	var letterIsRight = false;
-	//var resultHitCounter = 0;
 	var resultHitCounter = cityLength;
 
 	var wCount = 0;
 	var gCount = 8;
-	var uGuessletter = "";
+	//var uGuessletter = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","n","o","p","q","r","s",t","u","v","w","x","y","z"]
 
 function initialValues(){
 
@@ -43,13 +43,13 @@ function resetValues(){
 	guessString =[];
 
 	userKey = "";
-	userPrevKey = "";
+	userPrevKey = [];
 	result = [];
 	letterIsRight = false;
 	//var resultHitCounter = 0;
 	resultHitCounter = cityLength;
 	
-	gCount = 9;
+	gCount = 7;
 	uGuessletter = "";
 
 	//console.log(gcount);
@@ -68,13 +68,26 @@ function resetValues(){
 function generateCity(){
 	for(var i=0; i<cityLength; i++){
 
-		guessString[i] = " _ ";
+		guessString.push("_");
 	}
 
-	document.querySelector("#cityvalue").innerHTML = guessString;
+	document.querySelector("#cityvalue").innerHTML = guessString.join(" ");
 	console.log(guessString);
 	console.log(letterString);
 		
+}
+
+/*function getItem(item) {
+   console.log(item);
+}*/
+
+function loop(cur) {
+	for (var i=0;i<userPrevKey.length;i++){
+		var pre=userPrevKey[i];
+  	 	if (pre===cur) {return true;}
+	}
+	return false;
+   
 }
 
 
@@ -97,9 +110,11 @@ document.onkeyup = function(event){
 		}
 
 			
-		userKey = event.key;
-
+		userKey = String.fromCharCode(event.keyCode).toLowerCase();
+		
 		console.log(userKey);	
+		
+		
 
 		
 
@@ -114,6 +129,7 @@ document.onkeyup = function(event){
 			}
 						
 
+
 			result[c] = guessString[c];
 
 		}
@@ -122,22 +138,29 @@ document.onkeyup = function(event){
 		
 		console.log(resultHitCounter);
 
-		document.querySelector("#cityvalue").innerHTML = result;
+		document.querySelector("#cityvalue").innerHTML = result.join(" ");
 
 
-		if(!letterIsRight && userKey === userPrevKey){
-			document.querySelector("#guessednum").innerHTML = gCount;
+		//Problem------------------------------------------
+		// how to use forEach() here.
+		//;
+
+		if(!letterIsRight){
+			if (loop(userKey)) {
+				console.log("loop is true");
+				document.querySelector("#guessednum").innerHTML = gCount;
 			
-		}
-		else if(!letterIsRight){
-				
+			}
+			else {	
 			gCount--;
-			document.querySelector("#guessednum").innerHTML = gCount;
-			document.querySelector("#lettersentered").innerHTML += userKey + ", ";		
+			document.querySelector("#lettersentered").innerHTML += userKey + ", ";
+			document.querySelector("#guessednum").innerHTML = gCount;		
+			}
 		}
 
-		userPrevKey = userKey;
-		userKey = "";
+		
+		userPrevKey[i] = userKey;
+		i++;
 
 		
 
@@ -148,4 +171,3 @@ document.onkeyup = function(event){
 	
 
 
-//winCounter();
